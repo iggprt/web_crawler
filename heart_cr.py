@@ -2,36 +2,47 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
-link1 = "www.pcgarage.ro"
-link2 = "www.trupataxi.ro"
 
-link1  = "http://"+link1+'/'
-link2  = "http://"+link2+'/'
-visited = []
-to_go = [link1,link2]
 
-def get_source(link):
+def get_source(link):\
 	return requests.get(link).text
 
+
+
+def get_name(link):
+	pattern = re.compile(r'\.([a-zA-Z-]*)\.')
+	word = pattern.findall(home_link)
+	return word[0]
+
+
+
+def get_domain(link):
+	pattern_dom = re.compile (r'\.([a-z]+)(\/|"?")')
+	dom = pattern_dom.findall (home_link)
+	return dom[0]
+
+
+
 def get_links(source,home_link):
-	""" returns all the links found on this page """
-	""" im thinking something with args* and more generic """
 
 	soup = BeautifulSoup(source, "lxml")
 	matches = soup.find_all('a')
-	good_list = ["name", "title"]
+	word = ""
+	dom = ""
 
 	def desired_link(link):
 		for item in good_list:
 			if "/" + item + "/" in link:
 				return 1
 		return 0
+
+	def 
 	
 	def good_link(link):
 
 		pattern = re.compile(r'\.([a-zA-Z-]*)\.')
 		pattern_dom = re.compile (r'\.([a-z]+)/')
-		word = pattern.findall(home_link)
+		
 		word = word[0]
 
 		dom = pattern_dom.findall(home_link)
@@ -65,24 +76,3 @@ def get_links(source,home_link):
 
 
 	return matches
-
-
-results = get_links(get_source(to_go[1]),to_go[1])
-for item in results:
-	print (item)
-
-
-"""
-while len(to_go)>0:
-	
-	if to_go[0] not in visited:
-		visited.append(to_go[0])
-		to_go = to_go + get_links(get_source(to_go[0]))
-
-	to_go = list(set(to_go))
-	print ("len of to_go: ", len(to_go))
-	print ("len of visited: ", len(visited))
-	print (to_go[0])
-	del to_go[0]
-
-"""
