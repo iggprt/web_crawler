@@ -4,9 +4,8 @@ import re
 
 
 
-def get_source(link):\
+def get_source(link):
 	return requests.get(link).text
-
 
 
 def get_name(link):
@@ -15,12 +14,27 @@ def get_name(link):
 	return word[0]
 
 
-
 def get_domain(link):
 	pattern_dom = re.compile (r'\.([a-z]+)(\/|"?")')
 	dom = pattern_dom.findall (home_link)
 	return dom[0]
 
+
+def desired_link(link):
+	for item in good_list:
+		if item in link:
+			return 1
+	return 0
+
+
+def build_link(link):
+
+		if "https" in link:
+			return link
+		if link[-1] != "/":
+			link = "/" + link
+		if word not in link:
+			link = "http://www." + word + "." +get_domain()
 
 
 def get_links(source,home_link):
@@ -56,13 +70,7 @@ def get_links(source,home_link):
 			return 0
 		return 1
 
-	def build_link(link):
-		if "https" in link:
-			return link
-		if link[-1] != "/":
-			link = "/" + link
-		if word not in link:
-			link = "http://www." + word + ""
+	
 		
 
 	def link_builder(link):
